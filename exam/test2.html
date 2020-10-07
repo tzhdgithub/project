@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>小学数学答题</title>
+		<link href="./css/bootstrap.css" rel="stylesheet">
+		<script src="./js/jquery-3.3.1.js"></script>
+		<script src="./js/bootstrap.js"></script>
+		<script src="./js/vue.js"></script>
+		<script src="./js/axios.js"></script>
+	</head>
+	<body>
+		<div id="app" class="container">
+			<!-- logo栏 -->
+			<div class="row">
+				<div class="col-xs-4 col-md-3 col-lg-3">
+					<img src="./img/logo.jpg" alt="希望小学" width="70px" height="70px"/>
+					<span style="font-size: 20px;">希望小学</span>
+				</div>
+				<div class="col-xs-4 col-md-6 col-lg-6">
+					<h1 class="text-center">小学一年级数学在线测评</h1>
+				</div>
+				<div class="col-xs-4 col-md-3 col-lg-3 text-right" style="padding-top: 10px;">
+					<strong>欢迎小朋友</strong>
+				</div>
+			</div>
+			<!-- 导航栏 -->
+			<nav class="navbar navbar-default" style="margin: 0px 0px 0px 0px;">
+				<div class="container-fluid" style="font-weight: 900;">
+					<ul class="nav navbar-nav">
+						<li><a href="index.html">首&nbsp;&nbsp;&nbsp;&nbsp;页</a></li>
+						<li><a href="test1.html">单选题测评</a></li>
+						<li class="active"><a href="javascript:void()">填空题测评</a></li>
+					</ul>
+				</div>
+			</nav>
+			<!-- 考卷栏 -->
+			<h3 v-if="!flag" style="margin-top: 22px;">将计算结果填在方框里，{{questions.length}}题，共100分。（单击图片看大图，点图片外退出）</h3>
+			<h3 v-else style="margin-top: 22px;">你本次的测评成绩：
+				<span style="color: red; font-weight: 900;">{{sum}}</span>分
+			</h3>
+			<hr />
+			<div v-if="questions != null">
+				<p style="font-size: 20px; font-weight: 900;">
+					第{{cur+1}}题：{{questions[cur].TITLE1}}
+					<input type="text" v-model="questions[cur].answer" style="width: 50px;"/>
+					{{questions[cur].TITLE2}}
+				</p>
+				<div class="row">
+					<div class="col-lg-offset-1 col-lg-10" style="height: 300px;">
+						<img :src="picUrl" width="100%" height="100%" data-toggle="modal" data-target="#myModal2" />
+					</div>
+				</div>
+				<br />
+				<div v-if="flag">
+					<span v-if="flag2" style="font-size: 18px;">
+						正确答案：{{questions[cur].standard}}
+					</span>
+					<span v-else style="font-size: 18px;">
+						<button type="button" class="btn btn-default" @click="showanswer()">显示答案</button>
+					</span>
+				</div>
+				<hr />
+				<button v-if="cur<=min" type="button" class="btn btn-default disabled">上一题</button>
+				<button v-else type="button" class="btn btn-default" @click="prev()">上一题</button>
+				<button v-if="cur>=max" type="button" class="btn btn-default disabled">下一题</button>
+				<button v-else type="button" class="btn btn-default" @click="next()">下一题</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button v-if="flag" type="button" class="btn btn-default" @click="restart()">
+					再做一次
+				</button>
+				<button v-else-if="cur>=max" type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+					交&nbsp;&nbsp;&nbsp;&nbsp;卷
+				</button>
+				<button v-if="flag && sum<100" type="button" class="btn btn-default" @click="recover()">
+					错题订正
+				</button>
+			</div>
+			<div v-else>
+				<h4>题库缺失！</h4>
+			</div>
+			<br />
+			<!--答题卡-->
+			<div>
+				<table class="table table-bordered text-center" width="100%">
+					<tr>
+						<td colspan="12">答题卡（单击数字可跳转）</td>
+					</tr>
+					<tr v-if="!flag" v-for="i in lines">
+						<td @click="jump(0+(i-1)*5)"><a href="javascript:void()">{{1+(i-1)*5}}</a></td>
+						<td v-if="questions[0+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td v-else>
+							{{questions[0+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td @click="jump(1+(i-1)*5)"><a href="javascript:void()">{{2+(i-1)*5}}</a></td>
+						<td v-if="questions[1+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td v-else>
+							{{questions[1+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td @click="jump(2+(i-1)*5)"><a href="javascript:void()">{{3+(i-1)*5}}</a></td>
+						<td v-if="questions[2+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td v-if="questions[2+(i-1)*5].answer!=null">
+							{{questions[2+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td @click="jump(3+(i-1)*5)"><a href="javascript:void()">{{4+(i-1)*5}}</a></td>
+						<td v-if="questions[3+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td v-else>
+							{{questions[4+(i-1)*5-1].answer}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td @click="jump(4+(i-1)*5)"><a href="javascript:void()">{{5+(i-1)*5}}</a></td>
+						<td v-if="questions[4+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td v-else>
+							{{questions[4+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+					</tr>
+					<tr v-if="flag" v-for="i in lines">
+						<td @click="jump(0+(i-1)*5)"><a href="javascript:void()">{{1+(i-1)*5}}</a></td>
+						<td v-if="questions[0+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else-if="questions[0+(i-1)*5].answer!=questions[0+(i-1)*5].standard">
+							{{questions[0+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else>
+							{{questions[0+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">&#10004</span>
+						</td>
+						<td @click="jump(1+(i-1)*5)"><a href="javascript:void()">{{2+(i-1)*5}}</a></td>
+						<td v-if="questions[1+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else-if="questions[1+(i-1)*5].answer!=questions[1+(i-1)*5].standard">
+							{{questions[1+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else>
+							{{questions[1+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">&#10004</span>
+						</td>
+						<td @click="jump(2+(i-1)*5)"><a href="javascript:void()">{{3+(i-1)*5}}</a></td>
+						<td v-if="questions[2+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else-if="questions[2+(i-1)*5].answer!=questions[2+(i-1)*5].standard">
+							{{questions[2+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else>
+							{{questions[2+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">&#10004</span>
+						</td>
+						<td @click="jump(3+(i-1)*5)"><a href="javascript:void()">{{4+(i-1)*5}}</a></td>
+						<td v-if="questions[3+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else-if="questions[3+(i-1)*5].answer!=questions[3+(i-1)*5].standard">
+							{{questions[3+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else>
+							{{questions[3+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">&#10004</span>
+						</td>
+						<td @click="jump(4+(i-1)*5)"><a href="javascript:void()">{{5+(i-1)*5}}</a></td>
+						<td v-if="questions[4+(i-1)*5].answer==null">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else-if="questions[4+(i-1)*5].answer!=questions[4+(i-1)*5].standard">
+							{{questions[4+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red;">&#10008</span>
+						</td>
+						<td v-else>
+							{{questions[4+(i-1)*5].answer}}&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green;">&#10004</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!--版权栏-->
+			<div style="padding-top: 15px; padding-bottom: 15px;">
+				<p class="text-center">不建议使用IE浏览器</p>
+				<p class="text-center">Copyright &copy; 2020-2030 南昌市希望小学 版权所有</p>
+			</div>
+			<!--模态框-->
+			<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title">提示</h4>
+						</div>
+						<div class="modal-body">
+							<p>你确认要交卷了吗？</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" @click="confirm()">确认</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			<!--图片放大框-->
+			<div id="myModal2" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="col-md-12">
+						<img :src="picUrl" />
+					</div>
+				</div>
+			</div>
+			<!--成绩框-->
+			<div id="myModal3" class="modal fade" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title">提示</h4>
+						</div>
+						<div class="modal-body">
+							<p>你的成绩：<span style="color: red;">{{sum}}分</span></p>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+		</div>
+		<script src="./js/paper/test2.js"></script>
+	</body>
+</html>
