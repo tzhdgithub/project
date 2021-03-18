@@ -2,7 +2,7 @@ define(["jquery"], function($){
 	function banner(){
 		$.ajax({
 			type: "get",
-			url: "../data/index.json",
+			url: "https://github.com/tzhdgithub/project/blob/gh-pages/dist/data/index.json",
 			success: function(data){
 				var bannerArr=data.banner;
 				for (var i = 0; i < bannerArr.length; i++) {
