@@ -2,7 +2,7 @@ define(["jquery"], function($){
 	function banner(){
 		$.ajax({
 			type: "get",
-			url: "/project/dist/data/index.json",
+			url: "https://tzhdgithub.github.io/project/dist/data/index.json",
 			success: function(data){
 				var bannerArr=data.banner;
 				for (var i = 0; i < bannerArr.length; i++) {
@@ -70,7 +70,7 @@ define(["jquery"], function($){
 	function topNav(){
 		$.ajax({
 			type:"get",
-			url:"/project/dist/data/index.json",
+			url:"https://tzhdgithub.github.io/project/dist/data/index.json",
 			success:function(data){
 				var topNavArr=data.topNav;
 				for (var i = 0; i < topNavArr.length; i++) {
@@ -128,7 +128,7 @@ define(["jquery"], function($){
 	function leftNav(){
 		$.ajax({
 			type:"get",
-			url:"https://github.com/tzhdgithub/project/blob/gh-pages/dist/data/index.json",
+			url:"https://tzhdgithub.github.io/project/dist/data/index.json",
 			success(data){
 				var sideArr=data.sideNav;
 				for (var i = 0; i < sideArr.length; i++) {
@@ -169,7 +169,7 @@ define(["jquery"], function($){
 	function flashSale(){
 		$.ajax({
 			type:"get",
-			url:"../data/index.json",
+			url:"https://tzhdgithub.github.io/project/dist/data/index.json",
 			success:function(data){
 				var swiperArr=data.list;
 				var colorArr=["green","blue","orange","purple","red"];
@@ -352,7 +352,7 @@ define(["jquery"], function($){
 	function phoneGoods(){
 		$.ajax({
 			type:"get",
-			url:"../data/index.json",
+			url:"https://tzhdgithub.github.io/project/dist/data/index.json",
 			success:function(data){
 				var first=data.goods[0];
 				$(`<div class="page-topimg">
