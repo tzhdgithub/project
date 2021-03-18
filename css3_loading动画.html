@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script type="text/javascript" src="E:/MINE/前端框架/jQuery/jquery-3.3.1.min.js"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding:0;
+		}
+		html,body{
+			width: 100%;
+			height: 100%;
+			background-color: #EA3846;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.monster{
+			width: 110px;
+			height: 100px;
+			border-radius: 20px;
+			background-color: #25F029;
+			margin:10px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			box-shadow:0 10px 20px rgba(0,0,0,0.4);
+			position: relative;
+			animation:jumping 0.8s infinite alternate;
+		}
+		.monster.blue{
+			background-color: #1912B6;
+			animation-delay: 0.5s;
+		}
+		.monster .eye{
+			width:40%;
+			height: 40%;
+			border-radius: 50%;
+			background-color: #fff;
+			margin: 10px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.monster .eye .eyeball{
+			width: 50%;
+			height: 50%;
+			border-radius: 50%;
+			background-color: #000;
+			transform:translate(50%);
+			animation:eyemove 1.6s infinite alternate;
+		}
+		.monster .eye .eyeball.slow{
+			animation-delay: 0.5s;
+		}
+		.monster .mouth{
+			width: 32%;
+			height:12px;
+			border-radius: 12px;
+			background-color: #fff;
+		}
+		.monster::before,
+		.monster::after{
+			content: "";
+			display: block;
+			width:20%;
+			height: 10px;
+			border-radius: 10px;
+			background-color: #fff;
+			position:absolute;
+			top: -20px;
+			left: 50%;
+
+		}
+		.monster::before{
+			transform: translateX(-70%) rotate(45deg);
+		}
+		.monster::after{
+			transform:translateX(-30%) rotate(-45deg);
+		}
+		@keyframes jumping{
+			50%{
+				top:0;
+				box-shadow:0 10px 20px rgba(0,0,0,0.4);
+			}
+			100%{
+				top:-50px;
+				box-shadow:0 100px 20px rgba(0,0,0,0.2);
+			}
+		}
+		@keyframes eyemove {
+			0%,
+			15%{
+				transform:translate(50%);
+			}
+			85%,
+			100%{
+				transform: translate(-50%);
+			}
+		}
+		.pageLoading{
+			position:fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #7AC8F6;
+			display:flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			transition: opacity 0.6s linear 0.5s;
+		}
+		.pageLoading .loading{
+			width: 200px;
+			height: 8px;
+			background-color: #fff;
+			border-radius: 5px;
+			margin-top: 50px;
+		}
+		.pageLoading .loading .bar{
+			width: 100%;
+			height: 100%;
+			background-color: #17F603;
+		}
+		.pageLoading.complete{
+			opacity: 0;
+		}
+		.pageLoading.complete .monster{
+			transform:scale(0.1) rotate(360deg);
+			transition:transform 0.6s linear 0.5s;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<h1 class="monsterText">Hello
+			<br>There
+		</h1>
+		<h2>We will eat you</h2>
+	</div>
+	<div class="monster">
+		<div class="eye">
+			<div class="eyeball"></div>
+		</div>
+		<div class="mouth"></div>
+	</div>
+	<div class="monster blue">
+		<div class="eye">
+			<div class="eyeball slow"></div>
+		</div>
+		<div class="mouth"></div>
+	</div>
+	<div class="pageLoading">
+		<div class="monster">
+			<div class="eye">
+				<div class="eyeball"></div>
+			</div>
+			<div class="mouth"></div>
+		</div>
+		<div class="loading">
+			<div class="bar"></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var per=0;
+		var timer;
+		timer=setInterval(function(){
+			$('.bar').css("width",per+"%");
+			per+=1;
+			if(per>100){
+				clearInterval(timer);
+				$('.pageLoading').addClass("complete");
+				setTimeout(function(){
+					$('.monsterText').html("We are<br/>SQUARE<br/>MONSTER!");
+					$('.monsterText').css("color",'#fff');
+					$(".monsterText+h2").css({"color":"#DEDDDD80"})
+				},1500)
+			}
+		},25)
+	</script>
+</body>
+</html>
