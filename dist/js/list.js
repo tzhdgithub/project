@@ -96,7 +96,7 @@ define(["jquery"],function($){
 	function goodList(){
 		$.ajax({
 			type:"get",
-			url:"../data/list.json",
+			url:"https://tzhdgithub.github.io/project/dist/data/list.json",
 			success:function(data){
 				$(`<div class="scontent-first">
 				<div class="figure">
