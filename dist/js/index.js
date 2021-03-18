@@ -6,7 +6,7 @@ define(["jquery"], function($){
 			success: function(data){
 				var bannerArr=data.banner;
 				for (var i = 0; i < bannerArr.length; i++) {
-					$(`<a href="#" class="change-a"><img class="change-img" src="../img/banner/${bannerArr[i].img}" alt=""></a>`).appendTo(".banner-change");
+					$(`<a href="#" class="change-a"><img class="change-img" src="img/banner/${bannerArr[i].img}" alt=""></a>`).appendTo(".banner-change");
 					var node=$(`<a class="pagination-bullet" href="#"></a>`);
 					node.appendTo(".banner-pagination");
 					if (i==0) {
@@ -450,7 +450,7 @@ define(["jquery"], function($){
 						$(`<li class = 'brick-item ${j==7 ? "brick-item-s" : ""}'>
                             <a href="#">
                                 <div class = 'figure'>
-                                    <img width="160" height="160" src="../img/brick.webp" alt=""/>
+                                    <img width="160" height="160" src="img/brick.webp" alt=""/>
                                 </div>
                                 <h3 class = 'title'>
                                     ${hotChilds[j].title}
@@ -476,7 +476,7 @@ define(["jquery"], function($){
 						$(`<li class = 'brick-item ${j==7 ? "brick-item-s" : ""}'>
                             <a href="#">
                                 <div class = 'figure'>
-                                    <img width="160" height="160" src="../img/brick-2.webp" alt=""/>
+                                    <img width="160" height="160" src="img/brick-2.webp" alt=""/>
                                 </div>
                                 <h3 class = 'title'>
                                     ${childs[j].title}
