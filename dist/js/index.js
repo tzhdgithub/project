@@ -389,7 +389,7 @@ define(["jquery"], function($){
 					$(`<li class = 'brick-item'>
                         <a href="#">
                             <div class = 'figure'>
-                                <img width="160" height="160" src="" alt=""/>
+                                <img width="160" height="160" src="img/xiaomi10s.webp" alt=""/>
                             </div>
                             <h3 class = 'title'>
 								${first.childs[i].title}	                            	
