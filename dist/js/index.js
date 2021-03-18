@@ -2,7 +2,7 @@ define(["jquery"], function($){
 	function banner(){
 		$.ajax({
 			type: "get",
-			url: "https://github.com/tzhdgithub/project/blob/gh-pages/dist/data/index.json",
+			url: "https://tzhdgithub.github.io/project/dist/data/index.json",
 			success: function(data){
 				var bannerArr=data.banner;
 				for (var i = 0; i < bannerArr.length; i++) {
@@ -70,7 +70,7 @@ define(["jquery"], function($){
 	function topNav(){
 		$.ajax({
 			type:"get",
-			url:"https://github.com/tzhdgithub/project/blob/gh-pages/dist/data/index.json",
+			url:"https://tzhdgithub.github.io/project/dist/data/index.json",
 			success:function(data){
 				var topNavArr=data.topNav;
 				for (var i = 0; i < topNavArr.length; i++) {
